@@ -5,11 +5,10 @@
 
 require('dotenv').config();
 
-const validateAccess = (req, res, next) => {
+const validateAccessFE = (req, res, next) => {
     // Het formaat is meestal: "Bearer MI6_SECRET..."
     const authHeader = req.headers['authorization'];
-    const secretKey = process.env.API_SECRET_KEY;
-
+    const secretKey = process.env.PASSWORD_FRONTEND;
 
     // 2. Geen paspoort? Geen toegang.
     if (!authHeader) {
@@ -22,7 +21,7 @@ const validateAccess = (req, res, next) => {
 
     // 4. Vergelijk met de master key
     if (token !== secretKey) {
-        console.warn(`💀 SECURITY BREACH: Invalid credentials used from IP: ${req.ip}`);
+        console.warn(`sSECURITY BREACH: Invalid credentials used from IP: ${req.ip}`);
         return res.status(403).json({ message: 'Access Denied. Invalid Clearance Code.' });
     }
 
@@ -30,4 +29,4 @@ const validateAccess = (req, res, next) => {
     next();
 };
 
-module.exports = validateAccess;
+module.exports = validateAccessFE;
