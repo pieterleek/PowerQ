@@ -90,7 +90,7 @@ Dashboard runs on **http://localhost:5173**
 
 ---
 
-## 🔐 Security Clearance
+## Security Clearance
 
 Both the ESP32 Agent and the Dashboard must authenticate.
 
@@ -136,7 +136,7 @@ Retrieve last 50 historical records.
 
 ---
 
-## 🕵️ Author
+## Author
 
 **Pieter Leek**
 use freely with strictly no warranty and support
