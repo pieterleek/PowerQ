@@ -4,13 +4,13 @@
 ![Tech Stack](https://img.shields.io/badge/STACK-JS_Fullstack-blue.svg)
 ![Hardware](https://img.shields.io/badge/HARDWARE-ESP32_&_ZMCT103C-orange.svg)
 
-## 🎯 Mission Objective
+## Mission Objective
 PowerQ is an advanced real-time energy intelligence system. Built with strict  
 **Clean Code** principles and a modular **MVC architecture**, it processes, archives, and visualizes measurement data in real-time.
 
 ---
 
-## 🏗️ Architecture (The Blueprint)
+## Architecture (The Blueprint)
 
 The system consists of three coordinated layers communicating via secure channels:
 
@@ -35,21 +35,21 @@ graph LR
 
 ---
 
-## 🧰 Tech Stack (The Gadgets)
+## Tech Stack (The Gadgets)
 
-### 🔌 Hardware
+### Hardware
 - **MCU:** ESP32 Development Board  
 - **Sensor:** ZMCT103C (Active Module with Op-Amp)  
 - **Connection:** Wi-Fi (802.11 b/g/n)  
 
-### 🖥️ Backend (The Archive)
+### Backend (The Archive)
 - **Runtime:** Node.js (Express)  
 - **Real-time:** Socket.io  
 - **Database:** PostgreSQL + TimescaleDB (Docker)  
 - **ORM:** Sequelize  
 - **Pattern:** MVC + Service Layer  
 
-### 📊 Frontend (Mission Control)
+### Frontend (Mission Control)
 - **Framework:** Vue.js 3 (Composition API)  
 - **Build Tool:** Vite  
 - **Visualization:** Chart.js  
@@ -57,7 +57,7 @@ graph LR
 
 ---
 
-## 🚀 Installation Protocol
+## Installation Protocol
 
 ### 1. Deploy TimescaleDB
 
@@ -70,7 +70,7 @@ docker run -d --name powerq-db -p 5432:5432 \
 ### 2. Backend Deployment
 
 ```bash
-cd energy-backend
+cd backend
 npm install
 # Configure your .env file (see Security Clearance)
 npm run dev
@@ -81,7 +81,7 @@ Server runs on **http://localhost:3000**
 ### 3. Frontend Deployment
 
 ```bash
-cd energy-frontend
+cd frontend/Qpower
 npm install
 npm run dev
 ```
@@ -116,7 +116,7 @@ Authorization: Bearer <API_SECRET_KEY>
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 ### POST /api/measurements  
 Inbound intel from the ESP32 Agent.  
@@ -139,3 +139,4 @@ Retrieve last 50 historical records.
 ## 🕵️ Author
 
 **Pieter Leek**
+use freely with strictly no warranty and support
