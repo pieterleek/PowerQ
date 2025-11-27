@@ -36,14 +36,14 @@ async function startServer() {
     try {
         console.log(' Verbinding maken met database...');
         
-        // 1. Database syncen (tabellen aanmaken)
+        // Database syncen 
         await sequelize.sync();
         console.log('Database gesynchroniseerd.');
 
-        // 2. TimescaleDB initialiseren (Hypertable maken)
+        // TimescaleDB Hypertable maken
         await initializeTimescale();
         
-        // 3. Pas als alles klaar is, starten we de poort (luisteren)
+        // Luister naar de poort 
         server.listen(PORT, () => {
             console.log(`PowerQ Backend draait op poort ${PORT}`);
         });
@@ -53,5 +53,5 @@ async function startServer() {
     }
 }
 
-// Start de kettingreactie
+
 startServer();

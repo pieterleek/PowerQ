@@ -1,19 +1,28 @@
-// src/services/measurement.service.js
+/* * MI6 CLASSIFIED - GADGET LOGIC CORE
+ * MODULE: INTELLIGENCE PROCESSING & BUFFERING
+ * NOTE: DO NOT TOUCH THE WIRES
+ */
+
+
 const { getIO } = require('./socket.service');
 const Measurement = require('../models/measurement');
 
 class MeasurementService {
 
     constructor() {
+        // De 'Black Box'. Hier sparen we de data op.
         this.buffer = [];
+
+        // Trigger limiet. Niet te vroeg vuren, 007. Geduld is een schone zaak.
         this.BUFFER_LIMIT = 10;
     }
 
 
     async processNewData({ deviceId, current, voltage }) {
-        // A. Verrijking (Calculated Fields)
+        // P = U * I. Simpele natuurkunde, zelfs voor een 'double-0' agent.
         const powerWatts = parseFloat((voltage * current).toFixed(2));
-        const timestamp = new Date(); // Server tijd is leidend (Single Source of Truth)
+
+        const timestamp = new Date(); // Synchroniseer horloges. Nu.
 
         const fullPayload = {
             deviceId,   // Komt van ESP
@@ -29,14 +38,14 @@ class MeasurementService {
             const io = getIO();
             io.emit('energy_update', realTimePayload);
         } catch (e) {
-            // Socket errors mogen de flow niet breken
+            // Radio stilte? Negeer het en ga door met de missie.
         }
 
-        // 3. BUFFEREN VOOR DATABASE
-        // We voegen de meting toe aan de wachtrij
+
         this.buffer.push(realTimePayload);
 
-        // 4. CHECK: Is de buffer vol?
+        // CHECK: Is de buffer vol? 
+        // Zo ja, dumpen we de lading in het archief (Database).
         if (this.buffer.length >= this.BUFFER_LIMIT) {
             await this.flushBufferToDatabase();
         }
@@ -64,13 +73,14 @@ class MeasurementService {
             timestamp: lastTimestamp
         };
 
-        // Opslaan in TimescaleDB (asynchroon, we wachten er niet op)
+        // Opslaan in de kluis (TimescaleDB). 
+        // Probeer het niet te vergeten, ik heb geen zin om het opnieuw uit te leggen.
         Measurement.create(dbPayload)
             .catch(err => console.error('Fout bij opslaan geaggregeerde data:', err));
 
     }
 
-    //wiskundig gemiddelde
+    //wiskundig gemiddelde. Hogere Q logica
     calculateAverage(arr) {
         const sum = arr.reduce((a, b) => a + b, 0);
         return parseFloat((sum / arr.length).toFixed(2));
