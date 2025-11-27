@@ -4,7 +4,8 @@ const MeasurementController = require('../controllers/measurement.controller');
 const securityCheck = require('../middleware/security.middleware');
 
 
-// POST request: Eerst langs securityCheck, dan pas naar de Controller
+// Beide routes nu beveiligd met dezelfde sleutel
 router.post('/', securityCheck, MeasurementController.createMeasurement);
+router.get('/', securityCheck, MeasurementController.getHistory); // <- Slot erop!
 
 module.exports = router;

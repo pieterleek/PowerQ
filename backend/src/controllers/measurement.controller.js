@@ -1,38 +1,53 @@
-/* * MI6 CLASSIFIED - LEVEL 5 CLEARANCE
- * MODULE: INCOMING INTEL INTERCEPTOR
- * CODENAME: "THE GATEKEEPER"
+/* * MI6 CLASSIFIED
+ * MODULE: CONTROLLER
  */
 
-
 const MeasurementService = require('../services/measurement.service');
-class MeasurementController {
 
+class MeasurementController {
+    
+    // 1. POST: Nieuwe data ontvangen (van ESP32)
     async createMeasurement(req, res) {
         try {
             const { deviceId, current, voltage } = req.body;
 
-            // Voltage mag optioneel zijn (default 230), maar current en ID zijn verplicht.
+            // Security check: is de payload compleet?
             if (!deviceId || current === undefined) {
-                console.warn(`ALERT: Suspicious intel received from unknown agent : `, req.body);
+                console.warn(`⚠️ ALERT: Suspicious intel received.`, req.body);
                 return res.status(400).json({ 
-                    message: 'Negative, 007. Missing credentials or payload.' 
+                    message: 'Negative. Missing credentials or payload.' 
                 });
             }
 
-            // Delegeer naar "The Quartermaster" (Service Layer) voor verwerking.
             const result = await MeasurementService.processNewData({ 
                 deviceId, 
                 current, 
-                voltage: voltage || 230.0 // Fallback als ESP32 geen voltage stuurt - Standaard Europese spanning.
+                voltage: voltage || 230.0 
             });
 
-            // Mission Accomplished. Bevestig ontvangst aan de zender.
             return res.status(201).json({ success: true, data: result });
+
         } catch (error) {
-            console.error('Controller Error:', error);
-            return res.status(500).json({ message: 'System Malfunction. Call Q' });
+            console.error('CRITICAL FAILURE in Comm-Link:', error);
+            return res.status(500).json({ message: 'System Malfunction.' });
+        }
+    }
+
+    // 2. GET: Historie ophalen (HIERGING HET WAARSCHIJNLIJK MIS)
+    // Zorg dat deze functie BINNEN de class staat!
+    async getHistory(req, res) {
+        try {
+            // Roep de service aan
+            const history = await MeasurementService.getRecentHistory();
+            
+            // Stuur data terug naar de frontend
+            return res.status(200).json(history);
+        } catch (error) {
+            console.error('Retrieval Error:', error);
+            return res.status(500).json({ message: 'Kan archief niet openen.' });
         }
     }
 }
 
+// Export de instantie van de class
 module.exports = new MeasurementController();
