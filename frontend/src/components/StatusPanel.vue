@@ -36,7 +36,6 @@ const voltageDisplay = computed(() => latestReading.value.voltage.toFixed(1));
 </template>
 
 <style scoped>
-/* James Bond / Dark Mode Styling */
 .panel-container { background: #111; color: #0f0; padding: 20px; border: 1px solid #333; margin-bottom: 20px; font-family: 'Courier New', monospace; }
 .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; margin-bottom: 20px; }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }

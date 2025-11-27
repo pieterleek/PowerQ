@@ -26,8 +26,7 @@ watch(authError, (hasError) => {
 
 const handleLogin = () => {
   needsLogin.value = false;
-  connect(); // Probeer te verbinden met de nieuwe code
-  // De pagina hoeft niet te herladen, de socket connectie start gewoon
+  connect(); 
 };
 </script>
 
@@ -36,7 +35,7 @@ const handleLogin = () => {
     <LoginTerminal v-if="needsLogin" @login-success="handleLogin" />
 
     <div v-else class="dashboard">
-      <h1 class="title">Q-BRANCH // ENERGY MONITOR</h1>
+      <h1 class="title">ENERGY MONITOR</h1>
       <StatusPanel />
       <EnergyChart />
     </div>
