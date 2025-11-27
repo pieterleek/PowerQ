@@ -47,7 +47,7 @@ const PORT = process.env.PORT || 3000;
 
 async function startMission() {
     try {
-        console.log('Q-Branch: System initializing...');
+        console.log('System initializing...');
         console.log('Connecting to Mainframe (Database)...');
       
         await sequelize.sync(); 
