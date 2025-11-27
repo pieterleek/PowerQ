@@ -1,57 +1,72 @@
-// src/app.js
+/* * MI6 OPERATION CENTER
+ * FILE: app.js
+ * STATUS: ACTIVE
+ * CLEARANCE: TOP SECRET
+ */
+
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 require('dotenv').config();
 
-// Imports voor Database & Architectuur
+const path = require('path');
+
+
+
+// --- ASSETS & INTELLIGENCE ---
 const sequelize = require('./config/database');
-const Measurement = require('./models/measurement'); // Nodig om het model te laden
+const Measurement = require('./models/measurement'); // Cruciaal: Laad het model in het geheugen
 const initializeTimescale = require('./utils/timescale-init');
 const measurementRoutes = require('./routes/measurement.routes');
 const { setupSocket } = require('./services/socket.service');
 
-// Setup Express & HTTP Server
+// --- INITIALIZING SYSTEMS ---
 const app = express();
 const server = http.createServer(app);
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// --- PROTOCOLS (Middleware) ---
+app.use(cors()); // Sta communicatie toe van andere locaties (Front-end)
+app.use(express.json()); // Sta JSON payloads toe
 
-// Socket.io Setup
+
+app.use(express.static(path.join(__dirname, '../public')));
+
+
 const io = new Server(server, {
     cors: { origin: "*" }
 });
+
 setupSocket(io);
 
-// Routes koppelen
+
 app.use('/api/measurements', measurementRoutes);
 
 const PORT = process.env.PORT || 3000;
 
 
-async function startServer() {
+async function startMission() {
     try {
-        console.log(' Verbinding maken met database...');
-        
-        // Database syncen 
-        await sequelize.sync();
-        console.log('Database gesynchroniseerd.');
+        console.log('Q-Branch: System initializing...');
+        console.log('Connecting to Mainframe (Database)...');
+      
+        await sequelize.sync(); 
+        console.log('Mainframe connected & synchronized.');
 
-        // TimescaleDB Hypertable maken
+
         await initializeTimescale();
         
-        // Luister naar de poort 
+   
         server.listen(PORT, () => {
-            console.log(`PowerQ Backend draait op poort ${PORT}`);
+            console.log(`Operation "Energy Monitor" is LIVE on port ${PORT}`);
+            console.log(`Secure Comm-Link established.`);
         });
 
     } catch (error) {
-        console.error('Kan server niet starten:', error);
+        console.error('MISSION CRASHED: Critical system failure during startup.');
+        console.error(error);
     }
 }
 
-
-startServer();
+// Execute.
+startMission();

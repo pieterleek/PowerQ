@@ -7,9 +7,6 @@
 const MeasurementService = require('../services/measurement.service');
 class MeasurementController {
 
-
-    // TO DO : Add security checks (API Key, Auth, etc.)
-
     async createMeasurement(req, res) {
         try {
             const { deviceId, current, voltage } = req.body;

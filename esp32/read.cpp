@@ -5,8 +5,9 @@
 // --- CONFIGURATIE ---
 const char *ssid = "";
 const char *password = "";
-const char *serverUrl = "http://192.168.1.50:3000/";
+const char *serverUrl = "http://192.168.1.50:3000/api/measurements";
 const char *deviceId = "esp32_device_01"; // Unieke ID voor dit apparaat
+const char *API_SECRET = "Bearer XXXXX";  // Vul hier de API sleutel in
 
 // Pin Definitie
 const int ADC_INPUT = 34; // GPIO 34 (Analog ADC1_CH6)
@@ -69,6 +70,7 @@ void loop()
             HTTPClient http;
             http.begin(serverUrl);
             http.addHeader("Content-Type", "application/json");
+            http.addHeader("Authorization", API_SECRET);
 
             // Bouw de JSON string (Clean & Simpel)
             String jsonPayload = "{";
@@ -81,7 +83,11 @@ void loop()
             // Stuur de POST
             int httpResponseCode = http.POST(jsonPayload);
 
-            if (httpResponseCode > 0)
+            if (httpResponseCode == 401 || httpResponseCode == 403)
+            {
+                Serial.println("No access,  Check API Key.");
+            }
+            else if (httpResponseCode > 0)
             {
                 // Succes (201 of 200)
             }

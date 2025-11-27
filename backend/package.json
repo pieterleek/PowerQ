@@ -14,7 +14,9 @@
   "author": "",
   "type": "commonjs",
   "main": "index.js",
-  "scripts": {
+ "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -27,5 +29,8 @@
     "sequelize": "^6.37.7",
     "socket.io": "^4.8.1"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
 }
