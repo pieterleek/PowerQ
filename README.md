@@ -1,68 +1,65 @@
-````markdown
 # ⚡ PowerQ: Real-time Energy Intelligence
 
 ![Project Status](https://img.shields.io/badge/STATUS-ACTIVE-brightgreen.svg)
-![Tech Stack](https://img.shields.io/badge/STACK-MEARN_Stack-blue.svg)
+![Tech Stack](https://img.shields.io/badge/STACK-JS_Fullstack-blue.svg)
 ![Hardware](https://img.shields.io/badge/HARDWARE-ESP32_&_ZMCT103C-orange.svg)
 
 ## 🎯 Mission Objective
-PowerQ is an advanced, real-time energy intelligence system. Designed with strict 
-**Clean Code** principles, it leverages a robust 
-**MVC architecture** to process, archive, and visualize measurement data in real-time.
-
+PowerQ is an advanced real-time energy intelligence system. Built with strict  
+**Clean Code** principles and a modular **MVC architecture**, it processes, archives, and visualizes measurement data in real-time.
 
 ---
 
 ## 🏗️ Architecture (The Blueprint)
 
-The system consists of three distinct layers communicating via secure channels:
+The system consists of three coordinated layers communicating via secure channels:
 
-1.  **The Agent (Hardware):** An ESP32 equipped with a ZMCT103C sensor measures current (Amps) and transmits this intel via a secured REST API.
-2.  **The Mainframe (Backend):** A Node.js API that buffers, validates, and stores data in **TimescaleDB** (PostgreSQL) for historical analysis, while simultaneously broadcasting live data via WebSockets.
-3.  **The Dashboard (Frontend):** A Vue.js 3 application acting as the Mission Control Center, featuring real-time data visualization.
+1. **The Agent (Hardware):**  
+   An ESP32 with a ZMCT103C sensor measures current (Amps) and transmits this intel via a secured REST API.
+
+2. **The Mainframe (Backend):**  
+   A Node.js API that buffers, validates, and stores data in **TimescaleDB** (PostgreSQL) for historical analytics, while broadcasting real-time data via WebSockets.
+
+3. **The Dashboard (Frontend):**  
+   A Vue.js 3 application functioning as Mission Control, complete with live charts and historical querying.
 
 ### Data Flow
-````mermaid
+```mermaid
 graph LR
     A[ESP32 Sensor] -- JSON (POST) --> B(Node.js API)
     B -- Buffer/Save --> C[(TimescaleDB)]
     B -- Socket.io (Emit) --> D[Vue.js Frontend]
     D -- Fetch History (GET) --> B
     B -- Query --> C
-````
+```
 
------
+---
 
 ## 🧰 Tech Stack (The Gadgets)
 
 ### 🔌 Hardware
-
-  * **MCU:** ESP32 Development Board
-  * **Sensor:** ZMCT103C (Active Module with Op-Amp)
-  * **Connection:** WiFi (802.11 b/g/n)
+- **MCU:** ESP32 Development Board  
+- **Sensor:** ZMCT103C (Active Module with Op-Amp)  
+- **Connection:** Wi-Fi (802.11 b/g/n)  
 
 ### 🖥️ Backend (The Archive)
-
-  * **Runtime:** Node.js (Express)
-  * **Real-time:** Socket.io
-  * **Database:** PostgreSQL + TimescaleDB (via Docker)
-  * **ORM:** Sequelize
-  * **Pattern:** MVC + Service Layer
+- **Runtime:** Node.js (Express)  
+- **Real-time:** Socket.io  
+- **Database:** PostgreSQL + TimescaleDB (Docker)  
+- **ORM:** Sequelize  
+- **Pattern:** MVC + Service Layer  
 
 ### 📊 Frontend (Mission Control)
+- **Framework:** Vue.js 3 (Composition API)  
+- **Build Tool:** Vite  
+- **Visualization:** Chart.js  
+- **Styling:** Dark Mode / Terminal Style  
 
-  * **Framework:** Vue.js 3 (Composition API)
-  * **Build Tool:** Vite
-  * **Visuals:** Chart.js
-  * **Styling:** Dark Mode / Terminal Style
-
------
+---
 
 ## 🚀 Installation Protocol
 
-### 1\. Database Initialization
-
-Deploy the TimescaleDB instance via Docker:
+### 1. Deploy TimescaleDB
 
 ```bash
 docker run -d --name powerq-db -p 5432:5432 \
@@ -70,18 +67,18 @@ docker run -d --name powerq-db -p 5432:5432 \
   timescale/timescaledb:latest-pg14
 ```
 
-### 2\. Backend Deployment
+### 2. Backend Deployment
 
 ```bash
 cd energy-backend
 npm install
-# Configure your .env file (see Security section)
+# Configure your .env file (see Security Clearance)
 npm run dev
 ```
 
-*Server listens on port 3000.*
+Server runs on **http://localhost:3000**
 
-### 3\. Frontend Deployment
+### 3. Frontend Deployment
 
 ```bash
 cd energy-frontend
@@ -89,15 +86,15 @@ npm install
 npm run dev
 ```
 
-*Dashboard accessible via http://localhost:5173*
+Dashboard runs on **http://localhost:5173**
 
------
+---
 
 ## 🔐 Security Clearance
 
-This project is fortified against unauthorized access. Both the ESP32 Agent and the Dashboard Operator must provide valid credentials.
+Both the ESP32 Agent and the Dashboard must authenticate.
 
-Create a `.env` file in the backend root directory:
+Create an `.env` file inside **energy-backend**:
 
 ```env
 PORT=3000
@@ -105,18 +102,23 @@ DB_NAME=postgres
 DB_USER=postgres
 DB_PASS=secret
 DB_HOST=localhost
+
+# Shared secret for ESP32 + Frontend
 API_SECRET_KEY=MI6_License_To_Kill_Reflector_5_2_X99
 ```
 
-*Note:* The Frontend will request the `API_SECRET_KEY` upon initial launch.
+**Authentication Format (Unified):**
 
------
+```
+Authorization: Bearer <API_SECRET_KEY>
+```
+
+---
 
 ## 📡 API Reference
 
-### `POST /api/measurements`
-
-*Inbound intel from the ESP32 Agent.*
+### POST /api/measurements  
+Inbound intel from the ESP32 Agent.  
 **Headers:** `Authorization: Bearer <API_SECRET_KEY>`
 
 ```json
@@ -127,15 +129,12 @@ API_SECRET_KEY=MI6_License_To_Kill_Reflector_5_2_X99
 }
 ```
 
-### `GET /api/measurements`
+### GET /api/measurements  
+Retrieve last 50 historical records.  
+**Headers:** `Authorization: Bearer <API_SECRET_KEY>`
 
-*Retrieve historical data (last 50 records).*
-**Headers:** `Authorization: <API_SECRET_KEY>`
-
------
+---
 
 ## 🕵️ Author
 
 **Pieter Leek**
-
-```
