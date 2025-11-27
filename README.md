@@ -99,12 +99,13 @@ Create an `.env` file inside **energy-backend**:
 ```env
 PORT=3000
 DB_NAME=postgres
-DB_USER=postgres
-DB_PASS=secret
-DB_HOST=localhost
+DB_USER=<<USERNAME>>
+DB_PASS=<<PASSWORD>>
+DB_HOST=<<YOUR HOST>>
+API_SECRET_KEY=<<YOUR SECRET KEY>> for connection between ESP32 AND backend
+PASSWORD_FRONTEND=<<YOUR PASSWORD>> for connection between frontend and backend
 
-# Shared secret for ESP32 + Frontend
-API_SECRET_KEY=MI6_License_To_Kill_Reflector_5_2_X99
+
 ```
 
 **Authentication Format (Unified):**
