@@ -1,30 +1,38 @@
+/* * MI6 SATELLITE UPLINK
+ * MODULE: SOCKET SERVICE
+ * SECURITY: VIEWER ONLY
+ */
+
 let io = null;
 
 exports.setupSocket = (socketIoInstance) => {
     io = socketIoInstance;
 
     // SOCKET BEWAKING (Middleware)
-    // Elke keer als iemand probeert te verbinden, checken we zijn papieren.
     io.use((socket, next) => {
-        const token = socket.handshake.auth.token; // Hier verwachten we de sleutel
-        const secretKey = process.env.API_SECRET_KEY; // De sleutel uit .env
+        const token = socket.handshake.auth.token; 
+        
+        // We halen nu de VIEWER sleutel op, want alleen de frontend gebruikt Sockets
+        const viewerKey = process.env.VIEWER_SECRET; 
 
-        if (token === secretKey) {
+        // HIER GING HET FOUT: We vergelijken nu met 'viewerKey'
+        if (token === viewerKey) {
             // Toegang verleend
             next();
         } else {
             // Toegang geweigerd
+            console.warn(`SOCKET BLOCKED: Invalid Viewer Token from ${socket.id}`);
             const err = new Error("UNAUTHORIZED");
-            err.data = { content: "Probeer het niet nog eens." };
+            err.data = { content: "Alleen voor bevoegde ogen." };
             next(err);
         }
     });
 
     io.on('connection', (socket) => {
-        console.log(`🕵️  Agent connected via Secure Socket: ${socket.id}`);
+        console.log(`Viewer connected via Secure Socket: ${socket.id}`);
         
         socket.on('disconnect', () => {
-            console.log(`Agent disconnected: ${socket.id}`);
+            console.log(` Viewer disconnected: ${socket.id}`);
         });
     });
 };

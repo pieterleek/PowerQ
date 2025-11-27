@@ -1,33 +1,37 @@
-/* * MI6 SECURITY PROTOCOL
- * LEVEL: CLASSIFIED
- * MODULE: AUTHENTICATION CHECKPOINT
+/* * MI6 SECURITY PROTOCOL - DUAL AUTHENTICATION
+ * MODULE: ACCESS CONTROL
  */
-
 require('dotenv').config();
 
 const validateAccess = (req, res, next) => {
-    // Het formaat is meestal: "Bearer MI6_SECRET..."
+    // 1. Haal de token uit de header
     const authHeader = req.headers['authorization'];
-    const secretKey = process.env.API_SECRET_KEY;
 
-
-    // 2. Geen paspoort? Geen toegang.
     if (!authHeader) {
-        console.warn(`INTRUDER ALERT: No credentials provided from IP: ${req.ip}`);
-        return res.status(401).json({ message: 'Access Denied. Clearance Level Missing.' });
+        return res.status(401).json({ message: 'Access Denied. No Credentials.' });
     }
 
-    // Strip het woord "Bearer " eraf (als het er staat) en check de code
+    // Strip "Bearer " eraf
     const token = authHeader.replace('Bearer ', '');
 
-    // 4. Vergelijk met de master key
-    if (token !== secretKey) {
-        console.warn(`💀 SECURITY BREACH: Invalid credentials used from IP: ${req.ip}`);
-        return res.status(403).json({ message: 'Access Denied. Invalid Clearance Code.' });
+    // 2. Haal de sleutels uit de kluis
+    const agentKey = process.env.AGENT_SECRET;   // Voor ESP32
+    const viewerKey = process.env.VIEWER_SECRET; // Voor Frontend
+
+    if (req.method === 'POST') {
+        if (token === agentKey) {
+            return next(); // Toegang verleend aan Agent
+        }
     }
 
-    // 'next()' vertelt Express om door te gaan naar de Controller.
-    next();
+    else if (req.method === 'GET') {
+        if (token === viewerKey) {
+            return next(); // Toegang verleend aan Viewer
+        }
+    }
+
+    console.warn(`SECURITY BREACH: Invalid token for ${req.method} from IP: ${req.ip}`);
+    return res.status(403).json({ message: 'Access Denied. Wrong Clearance Level.' });
 };
 
 module.exports = validateAccess;

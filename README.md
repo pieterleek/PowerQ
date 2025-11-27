@@ -102,8 +102,8 @@ DB_NAME=postgres
 DB_USER=<<USERNAME>>
 DB_PASS=<<PASSWORD>>
 DB_HOST=<<YOUR HOST>>
-API_SECRET_KEY=<<YOUR SECRET KEY>> for connection between ESP32 AND backend
-PASSWORD_FRONTEND=<<YOUR PASSWORD>> for connection between frontend and backend
+AGENT_SECRET=<<YOUR SECRET KEY>> for connection between ESP32 AND backend
+VIEWER_SECRET=<<YOUR PASSWORD>> for connection between frontend and backend
 
 
 ```

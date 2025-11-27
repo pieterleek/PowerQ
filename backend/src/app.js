@@ -58,7 +58,7 @@ async function startMission() {
         
    
         server.listen(PORT, () => {
-            console.log(`Operation "Energy Monitor" is LIVE on port ${PORT}`);
+            console.log(`Operation "Q-power" is LIVE on port ${PORT}`);
             console.log(`Secure Comm-Link established.`);
         });
 

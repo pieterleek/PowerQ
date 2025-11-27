@@ -13,7 +13,7 @@ class MeasurementController {
 
             // Security check: is de payload compleet?
             if (!deviceId || current === undefined) {
-                console.warn(`⚠️ ALERT: Suspicious intel received.`, req.body);
+                console.warn(`ALERT: Suspicious intel received.`, req.body);
                 return res.status(400).json({ 
                     message: 'Negative. Missing credentials or payload.' 
                 });

@@ -36,13 +36,13 @@ class MeasurementService {
         // De gebruiker ziet de meter wild bewegen, precies zoals het hoort.
         try {
             const io = getIO();
-            io.emit('energy_update', realTimePayload);
+            io.emit('energy_update', fullPayload);
         } catch (e) {
             // Radio stilte? Negeer het en ga door met de missie.
         }
 
 
-        this.buffer.push(realTimePayload);
+        this.buffer.push(fullPayload);
 
         // CHECK: Is de buffer vol? 
         // Zo ja, dumpen we de lading in het archief (Database).
@@ -50,8 +50,17 @@ class MeasurementService {
             await this.flushBufferToDatabase();
         }
 
-        return realTimePayload;
+        return fullPayload;
     }
+
+    async getRecentHistory() {
+        // Vraag het archief om de laatste 50 dossiers
+        return await Measurement.findAll({
+            limit: 50,
+            order: [['timestamp', 'DESC']] // Nieuwste eerst
+        });
+    }
+    
 
     // Hulpfunctie om het gemiddelde te berekenen en op te slaan
     async flushBufferToDatabase() {

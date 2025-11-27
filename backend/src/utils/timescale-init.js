@@ -27,7 +27,7 @@ async function initializeTimescale() {
             SELECT add_compression_policy('measurements', INTERVAL '7 days');
         `);
 
-        console.log("✅ TimescaleDB Hypertable succesvol geconfigureerd.");
+        console.log("TimescaleDB Hypertable succesvol geconfigureerd.");
     } catch (error) {
         // Negeer errors als de tabel al een hypertable is
         if (!error.message.includes('already a hypertable')) {
