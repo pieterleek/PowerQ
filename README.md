@@ -1,9 +1,9 @@
 ````markdown
 # ⚡ PowerQ: Real-time Energy Intelligence
 
-![Project Status](https://img.shields.io/badge/STATUS-ACTIVE-brightgreen)
-![Tech Stack](https://img.shields.io/badge/STACK-MEARN%20Stack-blue)
-![Hardware](https://img.shields.io/badge/HARDWARE-ESP32%20%2B%20ZMCT103C-orange)
+![Project Status](https://img.shields.io/badge/STATUS-ACTIVE-brightgreen.svg)
+![Tech Stack](https://img.shields.io/badge/STACK-MEARN_Stack-blue.svg)
+![Hardware](https://img.shields.io/badge/HARDWARE-ESP32_&_ZMCT103C-orange.svg)
 
 ## 🎯 Mission Objective
 PowerQ is an advanced, real-time energy intelligence system. Designed with strict **Clean Code** principles, it leverages a robust **MVC architecture** to process, archive, and visualize measurement data in real-time.
