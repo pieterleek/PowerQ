@@ -6,9 +6,10 @@
 ![Hardware](https://img.shields.io/badge/HARDWARE-ESP32_&_ZMCT103C-orange.svg)
 
 ## 🎯 Mission Objective
-PowerQ is an advanced, real-time energy intelligence system. Designed with strict **Clean Code** principles, it leverages a robust **MVC architecture** to process, archive, and visualize measurement data in real-time.
+PowerQ is an advanced, real-time energy intelligence system. Designed with strict 
+**Clean Code** principles, it leverages a robust 
+**MVC architecture** to process, archive, and visualize measurement data in real-time.
 
-The system acts as a digital mirror to the power grid: every fluctuation is instantly observed and reflected.
 
 ---
 
@@ -21,7 +22,7 @@ The system consists of three distinct layers communicating via secure channels:
 3.  **The Dashboard (Frontend):** A Vue.js 3 application acting as the Mission Control Center, featuring real-time data visualization.
 
 ### Data Flow
-```mermaid
+````mermaid
 graph LR
     A[ESP32 Sensor] -- JSON (POST) --> B(Node.js API)
     B -- Buffer/Save --> C[(TimescaleDB)]
