@@ -31,17 +31,14 @@ app.use('/api/measurements', measurementRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-// --- DE BELANGRIJKSTE WIJZIGING ---
-// We gebruiken één centrale functie om alles in de juiste volgorde te starten.
-// Er staan GEEN losse server.listen() commando's meer buiten deze functie.
 
 async function startServer() {
     try {
         console.log(' Verbinding maken met database...');
         
         // 1. Database syncen (tabellen aanmaken)
-        await sequelize.sync(); 
-        console.log('✅ Database gesynchroniseerd.');
+        await sequelize.sync();
+        console.log('Database gesynchroniseerd.');
 
         // 2. TimescaleDB initialiseren (Hypertable maken)
         await initializeTimescale();

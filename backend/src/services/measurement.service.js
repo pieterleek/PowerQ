@@ -10,16 +10,17 @@ class MeasurementService {
     }
 
 
-    async processNewData({ current, voltage = 230 }) {
-        // 1. Directe berekening voor Real-time weergave
+    async processNewData({ deviceId, current, voltage }) {
+        // A. Verrijking (Calculated Fields)
         const powerWatts = parseFloat((voltage * current).toFixed(2));
-        const timestamp = new Date();
+        const timestamp = new Date(); // Server tijd is leidend (Single Source of Truth)
 
-        const realTimePayload = {
-            current: parseFloat(current),
-            voltage: parseFloat(voltage),
-            power: powerWatts,
-            timestamp: timestamp
+        const fullPayload = {
+            deviceId,   // Komt van ESP
+            current,    // Komt van ESP
+            voltage,    // Komt van ESP
+            power: powerWatts,    // Berekend door Server
+            timestamp: timestamp  // Berekend door Server
         };
 
         // 2. STUUR DIRECT NAAR SOCKET (Live view blijft 0.5s)
