@@ -15,7 +15,7 @@ function connect() {
   if (!token) return;
 
   // Dit had natuurlijk beter in een environment variable gekund maar ja...
-  socket = io('https://api.qman.io', {
+  socket = io('http://localhost:3000', {
     auth: {
       token: token 
     }

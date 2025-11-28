@@ -17,7 +17,7 @@ const attemptLogin = () => {
 <template>
   <div class="terminal-overlay">
     <div class="login-box">
-      <div class="logo">MI6 SECURITY</div>
+      <div class="logo">SECURITY</div>
       <p>ENTER CLEARANCE CODE</p>
       
       <input 

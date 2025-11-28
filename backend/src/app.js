@@ -10,13 +10,14 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 require('dotenv').config();
 
+
 const path = require('path');
 
 
 
 // --- ASSETS & INTELLIGENCE ---
 const sequelize = require('./config/database');
-const Measurement = require('./models/measurement'); // Cruciaal: Laad het model in het geheugen
+const Measurement = require('./models/measurement'); 
 const initializeTimescale = require('./utils/timescale-init');
 const measurementRoutes = require('./routes/measurement.routes');
 const { setupSocket } = require('./services/socket.service');
@@ -42,7 +43,7 @@ setupSocket(io);
 
 app.use('/api/measurements', measurementRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 
 
 async function startMission() {

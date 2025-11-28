@@ -8,14 +8,13 @@ let io = null;
 exports.setupSocket = (socketIoInstance) => {
     io = socketIoInstance;
 
-    // SOCKET BEWAKING (Middleware)
+     // Middleware voor authenticatie van viewers
     io.use((socket, next) => {
         const token = socket.handshake.auth.token; 
         
-        // We halen nu de VIEWER sleutel op, want alleen de frontend gebruikt Sockets
+ 
         const viewerKey = process.env.VIEWER_SECRET; 
 
-        // HIER GING HET FOUT: We vergelijken nu met 'viewerKey'
         if (token === viewerKey) {
             // Toegang verleend
             next();

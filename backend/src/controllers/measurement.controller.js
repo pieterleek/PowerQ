@@ -33,8 +33,7 @@ class MeasurementController {
         }
     }
 
-    // 2. GET: Historie ophalen (HIERGING HET WAARSCHIJNLIJK MIS)
-    // Zorg dat deze functie BINNEN de class staat!
+   
     async getHistory(req, res) {
         try {
             // Roep de service aan

@@ -10,11 +10,8 @@ const Measurement = require('../models/measurement');
 class MeasurementService {
 
     constructor() {
-        // De 'Black Box'. Hier sparen we de data op.
-        this.buffer = [];
-
-        // Trigger limiet. Niet te vroeg vuren, 007. Geduld is een schone zaak.
-        this.BUFFER_LIMIT = 10;
+         this.buffer = [];
+         this.BUFFER_LIMIT = 10;
     }
 
 
@@ -32,20 +29,17 @@ class MeasurementService {
             timestamp: timestamp  // Berekend door Server
         };
 
-        // 2. STUUR DIRECT NAAR SOCKET (Live view blijft 0.5s)
-        // De gebruiker ziet de meter wild bewegen, precies zoals het hoort.
+      
         try {
             const io = getIO();
             io.emit('energy_update', fullPayload);
         } catch (e) {
-            // Radio stilte? Negeer het en ga door met de missie.
-        }
+            console.error('Socket Emit Fout:', e);
+        }   
 
 
         this.buffer.push(fullPayload);
 
-        // CHECK: Is de buffer vol? 
-        // Zo ja, dumpen we de lading in het archief (Database).
         if (this.buffer.length >= this.BUFFER_LIMIT) {
             await this.flushBufferToDatabase();
         }
@@ -54,8 +48,7 @@ class MeasurementService {
     }
 
     async getRecentHistory() {
-        // Vraag het archief om de laatste 50 dossiers
-        return await Measurement.findAll({
+           return await Measurement.findAll({
             limit: 50,
             order: [['timestamp', 'DESC']] // Nieuwste eerst
         });
@@ -82,8 +75,7 @@ class MeasurementService {
             timestamp: lastTimestamp
         };
 
-        // Opslaan in de kluis (TimescaleDB). 
-        // Probeer het niet te vergeten, ik heb geen zin om het opnieuw uit te leggen.
+    
         Measurement.create(dbPayload)
             .catch(err => console.error('Fout bij opslaan geaggregeerde data:', err));
 
