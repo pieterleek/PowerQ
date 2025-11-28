@@ -9,7 +9,6 @@ const chartCanvas = ref(null);
 let chartInstance = null;
 
 onMounted(async () => {
-  // 1. Initialiseer de Chart (leeg)
   const ctx = chartCanvas.value.getContext('2d');
   
   chartInstance = new Chart(ctx, {
@@ -23,14 +22,14 @@ onMounted(async () => {
         backgroundColor: 'rgba(0, 255, 0, 0.1)',
         borderWidth: 2,
         tension: 0.4,
-        pointRadius: 0, // Geen puntjes in de historie
+        pointRadius: 0, 
         fill: true
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: true, // Belangrijk: Zet animatie uit bij bulk-load
+      animation: false, 
       scales: {
         x: { display: false },
         y: { grid: { color: '#222' }, ticks: { color: '#0f0' } }

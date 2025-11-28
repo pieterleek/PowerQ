@@ -1,9 +1,8 @@
-// src/composables/useSocket.js
 import { ref } from 'vue';
 import { io } from 'socket.io-client';
 
 const isConnected = ref(false);
-const authError = ref(false); // Nieuw: om foute logins te detecteren
+const authError = ref(false);
 const latestReading = ref({
   deviceId: 'Loading...', power: 0, current: 0, voltage: 0, timestamp: new Date()
 });
@@ -15,10 +14,10 @@ function connect() {
   const token = localStorage.getItem('mi6_clearance_code');
   if (!token) return;
 
-  // We maken de verbinding nu pas aan, MET het token
-  socket = io('http://localhost:3000', {
+  // Dit had natuurlijk beter in een environment variable gekund maar ja...
+  socket = io('https://api.qman.io', {
     auth: {
-      token: token // Dit stuurt de sleutel naar de socket handshake
+      token: token 
     }
   });
 
@@ -45,10 +44,9 @@ async function fetchHistory() {
   if (!token) return [];
 
   try {
-    const response = await fetch('http://localhost:3000/api/measurements', {
+    const response = await fetch('https://api.qman.io/api/measurements', {
       method: 'GET',
       headers: {
-        // Stuur token mee als header (zoals we in de backend middleware hebben ingesteld)
         'Authorization': token 
       }
     });
@@ -68,8 +66,8 @@ async function fetchHistory() {
 
 export function useSocket() {
   return {
-    connect, // Nieuwe export
-    authError, // Nieuwe export
+    connect,
+    authError, 
     isConnected,
     latestReading,
     fetchHistory
