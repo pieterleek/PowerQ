@@ -1,3 +1,4 @@
+// Model voor databanktabel 'measurements'
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
@@ -5,14 +6,13 @@ const Measurement = sequelize.define('Measurement', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true 
     },
-    // De koppeling met de specifieke ESP32
     deviceId: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         }
     },
     current: {
@@ -23,34 +23,21 @@ const Measurement = sequelize.define('Measurement', {
         type: DataTypes.FLOAT,
         defaultValue: 230.0
     },
-    
-    // Power slaan we op zodat we niet telkens hoeven te rekenen bij het uitlezen
     power: {
         type: DataTypes.FLOAT, 
         allowNull: false
     },
-    // Expliciete timestamp voor TimescaleDB
     timestamp: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW
+        defaultValue: DataTypes.NOW,
+        primaryKey: true 
     }
 }, {
     tableName: 'measurements',
-    timestamps: false, // We beheren 'timestamp' zelf, dus geen standaard createdAt/updatedAt
+    timestamps: false, 
     indexes: [
-        // Index 1: Cruciaal voor TimescaleDB (tijdreeksen)
-        {
-            fields: ['timestamp']
-        },
-        // Index 2: Zorgt dat je snel kunt filteren op specifiek apparaat (bijv. "METER_01")
-        {
-            fields: ['deviceId']
-        },
-        // Index 3: Combi-index (vaak gebruikt: "Geef data van METER_01 van vandaag")
-        {
-            fields: ['deviceId', 'timestamp']
-        }
+        { fields: ['timestamp'] }
     ]
 });
 

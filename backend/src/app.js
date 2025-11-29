@@ -55,7 +55,7 @@ async function startMission() {
         console.log('Mainframe connected & synchronized.');
 
 
-        await initializeTimescale();
+        await sequelize.sync({ force: true });
         
    
         server.listen(PORT, () => {

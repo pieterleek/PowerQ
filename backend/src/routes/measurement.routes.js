@@ -7,6 +7,6 @@ const securityCheck = require('../middleware/security.middleware');
 
 // Beide routes nu beveiligd met dezelfde sleutel
 router.post('/', securityCheck, MeasurementController.createMeasurement);
-router.get('/', securityCheck, MeasurementController.getHistory); // <- Slot erop!
+router.get('/', securityCheck, MeasurementController.getHistory);
 
 module.exports = router;

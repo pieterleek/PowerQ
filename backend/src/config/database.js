@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// Clean Code: Haal credentials altijd uit process.env, nooit hardcoden
+
 const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,

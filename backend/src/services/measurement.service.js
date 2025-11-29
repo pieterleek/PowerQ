@@ -15,36 +15,41 @@ class MeasurementService {
     }
 
 
-    async processNewData({ deviceId, current, voltage }) {
-        // P = U * I. Simpele natuurkunde, zelfs voor een 'double-0' agent.
+   async processNewData({ deviceId, current, voltage = 230 }) {
+        // CALCULATING...
         const powerWatts = parseFloat((voltage * current).toFixed(2));
+        const timestamp = new Date();
 
-        const timestamp = new Date(); // Synchroniseer horloges. Nu.
 
-        const fullPayload = {
-            deviceId,   // Komt van ESP
-            current,    // Komt van ESP
-            voltage,    // Komt van ESP
-            power: powerWatts,    // Berekend door Server
-            timestamp: timestamp  // Berekend door Server
+        if (!deviceId || typeof current !== 'number' || isNaN(current)) {
+            throw new Error('Ongeldige meetgegevens ontvangen.' + JSON.stringify({ deviceId, current, voltage })    );
+        }
+
+        const payload = {
+            deviceId: deviceId,  
+            current: parseFloat(current),
+            voltage: parseFloat(voltage),
+            power: powerWatts,
+            timestamp: timestamp
         };
 
-      
+        // LIVE FEED
         try {
             const io = getIO();
-            io.emit('energy_update', fullPayload);
+            io.emit('energy_update', payload); 
         } catch (e) {
-            console.error('Socket Emit Fout:', e);
-        }   
+            // Radio stilte
+        }
 
+        // BUFFER UPDATE
+        this.buffer.push(payload); // Nu zit deviceId ook in de buffer
 
-        this.buffer.push(fullPayload);
-
+        // CHECK LIMIT
         if (this.buffer.length >= this.BUFFER_LIMIT) {
             await this.flushBufferToDatabase();
         }
 
-        return fullPayload;
+        return payload;
     }
 
     async getRecentHistory() {
